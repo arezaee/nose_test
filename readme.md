@@ -1,7 +1,7 @@
 # Test Specification -Face ManipulationThis 
 task involves shrinking/expanding a given picture's nose and left eye based on the user's input. The project is a command-line program that accepts the following inputs:
 ```
-python3 app.py --image="john.jpg" -t=50
+python3 app.py --image="john.jpg" -treshold=50
 ```
 
 ## image: 
