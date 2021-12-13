@@ -474,152 +474,152 @@ predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 i = 0
 c = 0
 
-while i < 68 and c != 27:
-    i = i+1
+# while i < 68 and c != 27:
+#     i = i+1
 
     # read the image
-    img = cv2.imread(f"helen/{i}.jpg")
-    # img = cv2.imread(args.image)
-    img = image_resize(img, height=800)
-    result = img.copy()
+    # img = cv2.imread(f"helen/{i}.jpg")
+img = cv2.imread(args.image)
+img = image_resize(img, height=800)
+result = img.copy()
 
-    # Convert image into grayscale
-    gray = cv2.cvtColor(src=img, code=cv2.COLOR_BGR2GRAY)
+# Convert image into grayscale
+gray = cv2.cvtColor(src=img, code=cv2.COLOR_BGR2GRAY)
 
-    # Use detector to find landmarks
-    faces = detector(gray)
-    if len(faces) == 0:
-        print("No Face Found!")
-        exit
+# Use detector to find landmarks
+faces = detector(gray)
+if len(faces) == 0:
+    print("No Face Found!")
+    exit
 
-    face = faces[0]
+face = faces[0]
 
-    # Create landmark object
-    landmarks = predictor(image=gray, box=face)
+# Create landmark object
+landmarks = predictor(image=gray, box=face)
 
-    nose_top = (landmarks.part(27).x, landmarks.part(27).y)
-    nose_bottom = (landmarks.part(30).x, landmarks.part(30).y)
+nose_top = (landmarks.part(27).x, landmarks.part(27).y)
+nose_bottom = (landmarks.part(30).x, landmarks.part(30).y)
 
-    # if (nose_top[0]-nose_bottom[0]) != 0:
-    #     angle = math.atan(
-    #         (nose_top[1]-nose_bottom[1])/(nose_top[0]-nose_bottom[0]))
-    #     angle = math.pi/2 - angle
+# if (nose_top[0]-nose_bottom[0]) != 0:
+#     angle = math.atan(
+#         (nose_top[1]-nose_bottom[1])/(nose_top[0]-nose_bottom[0]))
+#     angle = math.pi/2 - angle
 
-    #     rot_mat = cv2.getRotationMatrix2D(nose_bottom, angle, 1.0)
-    #     img = cv2.warpAffine(
-    #         img, rot_mat, img.shape[1::-1], flags=cv2.INTER_LINEAR)
+#     rot_mat = cv2.getRotationMatrix2D(nose_bottom, angle, 1.0)
+#     img = cv2.warpAffine(
+#         img, rot_mat, img.shape[1::-1], flags=cv2.INTER_LINEAR)
 
-    #     result = img.copy()
+#     result = img.copy()
 
-    #     # Convert image into grayscale
-    #     gray = cv2.cvtColor(src=img, code=cv2.COLOR_BGR2GRAY)
+#     # Convert image into grayscale
+#     gray = cv2.cvtColor(src=img, code=cv2.COLOR_BGR2GRAY)
 
-    #     # Use detector to find landmarks
-    #     faces = detector(gray)
-    #     if len(faces) == 0:
-    #         continue
+#     # Use detector to find landmarks
+#     faces = detector(gray)
+#     if len(faces) == 0:
+#         continue
 
-    #     face = faces[0]
-    #     x1 = face.left()  # left point
-    #     y1 = face.top()  # top point
-    #     x2 = face.right()  # right point
-    #     y2 = face.bottom()  # bottom point
+#     face = faces[0]
+#     x1 = face.left()  # left point
+#     y1 = face.top()  # top point
+#     x2 = face.right()  # right point
+#     y2 = face.bottom()  # bottom point
 
-    #     faces = detector(gray)
+#     faces = detector(gray)
 
-    #     if len(faces) == 0:
-    #         continue
-    #     face = faces[0]
+#     if len(faces) == 0:
+#         continue
+#     face = faces[0]
 
-    #     # Create landmark object
-    #     landmarks = predictor(image=gray, box=face)
+#     # Create landmark object
+#     landmarks = predictor(image=gray, box=face)
 
-    # # Loop through all the points
-    # for n in range(0, 68):
-    #     x = landmarks.part(n).x
-    #     y = landmarks.part(n).y
+# # Loop through all the points
+# for n in range(0, 68):
+#     x = landmarks.part(n).x
+#     y = landmarks.part(n).y
 
-    #     # Draw a circle
-    #     cv2.circle(img=img, center=(x, y), radius=3,
-    #                color=(0, 255, 0), thickness=-1)
+#     # Draw a circle
+#     cv2.circle(img=img, center=(x, y), radius=3,
+#                color=(0, 255, 0), thickness=-1)
 
-    nose_top = (landmarks.part(28).x, landmarks.part(28).y)
-    nose_bottom = (landmarks.part(33).x, landmarks.part(33).y)
-    nose_left = (landmarks.part(31).x, landmarks.part(31).y)
-    nose_right = (landmarks.part(35).x, landmarks.part(35).y)
+nose_top = (landmarks.part(28).x, landmarks.part(28).y)
+nose_bottom = (landmarks.part(33).x, landmarks.part(33).y)
+nose_left = (landmarks.part(31).x, landmarks.part(31).y)
+nose_right = (landmarks.part(35).x, landmarks.part(35).y)
 
-    nose_top_left = new_top_point(nose_top, nose_bottom, nose_left)
-    nose_top_right = new_top_point(nose_top, nose_bottom, nose_right)
-    nose_mid_left = new_btm_point(nose_bottom, nose_left)
-    nose_mid_right = new_btm_point(nose_bottom, nose_right)
+nose_top_left = new_top_point(nose_top, nose_bottom, nose_left)
+nose_top_right = new_top_point(nose_top, nose_bottom, nose_right)
+nose_mid_left = new_btm_point(nose_bottom, nose_left)
+nose_mid_right = new_btm_point(nose_bottom, nose_right)
 
-    slim_top_left = (nose_top_left[0] - int(nose_slim_coef *
-                                            (nose_top_left[0] - nose_top[0])/4.0), nose_top_left[1])
-    slim_top_right = (nose_top_right[0] - int(nose_slim_coef *
-                                              (nose_top_right[0] - nose_top[0])/4.0), nose_top_right[1])
+slim_top_left = (nose_top_left[0] - int(nose_slim_coef *
+                                        (nose_top_left[0] - nose_top[0])/4.0), nose_top_left[1])
+slim_top_right = (nose_top_right[0] - int(nose_slim_coef *
+                                            (nose_top_right[0] - nose_top[0])/4.0), nose_top_right[1])
 
-    slim_mid_left = (nose_mid_left[0] - int(nose_slim_coef *
-                                            (nose_mid_left[0] - nose_left[0])), nose_mid_left[1])
-    slim_mid_right = (nose_mid_right[0] - int(nose_slim_coef *
-                                              (nose_mid_right[0] - nose_right[0])), nose_mid_right[1])
+slim_mid_left = (nose_mid_left[0] - int(nose_slim_coef *
+                                        (nose_mid_left[0] - nose_left[0])), nose_mid_left[1])
+slim_mid_right = (nose_mid_right[0] - int(nose_slim_coef *
+                                            (nose_mid_right[0] - nose_right[0])), nose_mid_right[1])
 
-    nose_top_ = (landmarks.part(28).x, landmarks.part(28).y)
-    nose_bottom_ = (landmarks.part(33).x, landmarks.part(33).y+20)
+nose_top_ = (landmarks.part(28).x, landmarks.part(28).y)
+nose_bottom_ = (landmarks.part(33).x, landmarks.part(33).y+20)
 
-    d = landmarks.part(43).x - landmarks.part(42).x
+d = landmarks.part(43).x - landmarks.part(42).x
 
-    eye_left = (landmarks.part(42).x-d, landmarks.part(42).y)
-    eye_top1 = (landmarks.part(43).x, landmarks.part(43).y)
-    eye_top2 = (landmarks.part(44).x, landmarks.part(44).y)
-    eye_right = (landmarks.part(45).x+d, landmarks.part(45).y)
-    eye_bottom1 = (landmarks.part(46).x, landmarks.part(46).y)
-    eye_bottom2 = (landmarks.part(47).x, landmarks.part(47).y)
+eye_left = (landmarks.part(42).x-d, landmarks.part(42).y)
+eye_top1 = (landmarks.part(43).x, landmarks.part(43).y)
+eye_top2 = (landmarks.part(44).x, landmarks.part(44).y)
+eye_right = (landmarks.part(45).x+d, landmarks.part(45).y)
+eye_bottom1 = (landmarks.part(46).x, landmarks.part(46).y)
+eye_bottom2 = (landmarks.part(47).x, landmarks.part(47).y)
 
-    slim_eye_top1 = (eye_top1[0], eye_top1[1] -
-                     int(eye_slim_coef * (eye_top1[1] - eye_left[1])))
-    slim_eye_top2 = (eye_top2[0], eye_top2[1] -
-                     int(eye_slim_coef * (eye_top2[1] - eye_left[1])))
+slim_eye_top1 = (eye_top1[0], eye_top1[1] -
+                    int(eye_slim_coef * (eye_top1[1] - eye_left[1])))
+slim_eye_top2 = (eye_top2[0], eye_top2[1] -
+                    int(eye_slim_coef * (eye_top2[1] - eye_left[1])))
 
-    slim_eye_bottom1 = (eye_bottom1[0], eye_bottom1[1] -
-                        int(2*eye_slim_coef * (eye_bottom1[1] - eye_left[1])))
-    slim_eye_bottom2 = (eye_bottom2[0], eye_bottom2[1] -
-                        int(2*eye_slim_coef * (eye_bottom2[1] - eye_left[1])))
+slim_eye_bottom1 = (eye_bottom1[0], eye_bottom1[1] -
+                    int(2*eye_slim_coef * (eye_bottom1[1] - eye_left[1])))
+slim_eye_bottom2 = (eye_bottom2[0], eye_bottom2[1] -
+                    int(2*eye_slim_coef * (eye_bottom2[1] - eye_left[1])))
 
-    # print(
-    #     f"eye_top1 {eye_top1} , slim_eye_top1 {slim_eye_top1} eye_slim_coef {eye_slim_coef}")
-    # print(
-    #     f"eye_bottom1 {eye_bottom1} , slim_eye_bottom1 {slim_eye_bottom1} eye_slim_coef {eye_slim_coef}")
-    # img = cv2.polylines(img, [np.array([eye_left, eye_top1,  eye_top2, eye_right])], True, ( 0,255, 0), 2)
-    # img = cv2.polylines(img, [np.array([eye_left, slim_eye_top1, slim_eye_top2,eye_right])], True, (0, 0,128), 2)
+# print(
+#     f"eye_top1 {eye_top1} , slim_eye_top1 {slim_eye_top1} eye_slim_coef {eye_slim_coef}")
+# print(
+#     f"eye_bottom1 {eye_bottom1} , slim_eye_bottom1 {slim_eye_bottom1} eye_slim_coef {eye_slim_coef}")
+# img = cv2.polylines(img, [np.array([eye_left, eye_top1,  eye_top2, eye_right])], True, ( 0,255, 0), 2)
+# img = cv2.polylines(img, [np.array([eye_left, slim_eye_top1, slim_eye_top2,eye_right])], True, (0, 0,128), 2)
 
-    if nose_slim_coef >= 0:
-        result = strech_right_transform(
-            img, slim_top_right, nose_bottom_, nose_top_right, nose_mid_right, slim_top_right,  slim_mid_right)
-        result = strech_left_transform(
-            result, slim_top_left, nose_bottom_, nose_top_left, nose_mid_left, slim_top_left,  slim_mid_left)
+if nose_slim_coef >= 0:
+    result = strech_right_transform(
+        img, slim_top_right, nose_bottom_, nose_top_right, nose_mid_right, slim_top_right,  slim_mid_right)
+    result = strech_left_transform(
+        result, slim_top_left, nose_bottom_, nose_top_left, nose_mid_left, slim_top_left,  slim_mid_left)
 
-        result = strech_top_transform(
-            result, eye_left, eye_right, eye_top1,  eye_top2, slim_eye_top1, slim_eye_top2)
-        result = strech_bottom_transform(
-            result, eye_left, eye_right, eye_bottom1,  eye_bottom2, slim_eye_bottom1, slim_eye_bottom2)
+    result = strech_top_transform(
+        result, eye_left, eye_right, eye_top1,  eye_top2, slim_eye_top1, slim_eye_top2)
+    result = strech_bottom_transform(
+        result, eye_left, eye_right, eye_bottom1,  eye_bottom2, slim_eye_bottom1, slim_eye_bottom2)
 
-    else:
-        result = strech_right2_transform(
-            img, nose_top_, nose_bottom_, nose_top_right, nose_mid_right, slim_top_right,  slim_mid_right)
-        result = strech_left2_transform(
-            result, nose_top_, nose_bottom_, nose_top_left, nose_mid_left, slim_top_left,  slim_mid_left)
+else:
+    result = strech_right2_transform(
+        img, nose_top_, nose_bottom_, nose_top_right, nose_mid_right, slim_top_right,  slim_mid_right)
+    result = strech_left2_transform(
+        result, nose_top_, nose_bottom_, nose_top_left, nose_mid_left, slim_top_left,  slim_mid_left)
 
-        result = strech_top2_transform(
-            result, eye_left, eye_right, eye_top1,  eye_top2, slim_eye_top1, slim_eye_top2)
-        result = strech_bottom2_transform(
-            result, eye_left, eye_right, eye_bottom1,  eye_bottom2, slim_eye_bottom1, slim_eye_bottom2)
+    result = strech_top2_transform(
+        result, eye_left, eye_right, eye_top1,  eye_top2, slim_eye_top1, slim_eye_top2)
+    result = strech_bottom2_transform(
+        result, eye_left, eye_right, eye_bottom1,  eye_bottom2, slim_eye_bottom1, slim_eye_bottom2)
 
-    cv2.imshow(winname="Face", mat=img)
-    cv2.imshow(winname="Result", mat=result)
-    # cv2.imwrite(f"result_{args.image}", result)
+cv2.imshow(winname="Face", mat=img)
+cv2.imshow(winname="Result", mat=result)
+cv2.imwrite(f"result_{args.image}", result)
 
-    # Delay between every fram
-    c = cv2.waitKey(delay=0)
+# Delay between every fram
+c = cv2.waitKey(delay=0)
 
-    # Close all windows
-    cv2.destroyAllWindows()
+# Close all windows
+cv2.destroyAllWindows()
